@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from sqlalchemy.orm import Session
+from sqlalchemy import select
+from sqlalchemy.orm import Session, selectinload
 
 from app.modules.cart.models import Cart
 from app.modules.orders.models import Order, OrderItem
@@ -30,3 +31,17 @@ def create_order(db: Session, *, cart: Cart, total_amount: Decimal) -> Order:
 
     db.flush()
     return order
+
+
+def list_orders_by_cart_id(db: Session, cart_id: str) -> list[Order]:
+    stmt = select(Order).where(Order.cart_id == cart_id).order_by(Order.created_at.desc(), Order.id.desc())
+    return list(db.scalars(stmt).all())
+
+
+def get_order_by_id_and_cart_id(db: Session, *, order_id: int, cart_id: str) -> Order | None:
+    stmt = (
+        select(Order)
+        .options(selectinload(Order.items))
+        .where(Order.id == order_id, Order.cart_id == cart_id)
+    )
+    return db.scalar(stmt)
