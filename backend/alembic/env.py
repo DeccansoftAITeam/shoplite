@@ -7,6 +7,8 @@ from sqlalchemy import pool
 
 from app.core.db import Base, engine
 from app.modules.catalog import models as catalog_models  # noqa: F401
+from app.modules.cart import models as cart_models  # noqa: F401
+from app.modules.orders import models as orders_models  # noqa: F401
 
 config = context.config
 

@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     db_name: str = Field(default="shoplite")
     db_user: str = Field(default="sa")
     db_password: str = Field(default="dss")
+    cors_origins: list[str] = Field(default=["http://localhost:5173"])
 
     model_config = SettingsConfigDict(
         env_file=".env",

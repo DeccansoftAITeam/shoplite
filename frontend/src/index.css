@@ -1,0 +1,67 @@
+:root {
+  --text: #546173;
+  --text-h: #142033;
+  --bg: #f6f8fc;
+  --border: rgba(20, 32, 51, 0.08);
+  --code-bg: #eef2f7;
+  --accent: #175bc1;
+  --accent-bg: rgba(23, 91, 193, 0.08);
+  --accent-border: rgba(23, 91, 193, 0.24);
+  --shadow: rgba(15, 23, 42, 0.08) 0 22px 40px;
+
+  --sans: 'Segoe UI', 'Trebuchet MS', sans-serif;
+  --heading: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+h1 {
+  letter-spacing: -0.04em;
+  margin: 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+  }
+}
+
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
