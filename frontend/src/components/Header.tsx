@@ -16,6 +16,9 @@ export default function Header() {
         <NavLink to="/" className="nav-link">
           Products
         </NavLink>
+        <NavLink to="/orders" className="nav-link">
+          Orders
+        </NavLink>
         <NavLink to="/cart" className="nav-link cart-link">
           Cart
           <span className="cart-count" aria-label={`${itemCount} items in cart`}>
