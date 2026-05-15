@@ -35,6 +35,19 @@ class OrderNotFoundError(OrderServiceError):
 
 
 def place_order(db: Session, cart_id: str | None) -> Order:
+    """Create an order from the current cart.
+
+    Args:
+        db: Active database session.
+        cart_id: Cart identifier from the request context.
+
+    Returns:
+        The persisted order.
+
+    Raises:
+        EmptyCartError: If no cart exists or the cart has no items.
+        InsufficientStockError: If any cart item quantity exceeds product stock.
+    """
     cart = cart_service.get_existing_cart(db=db, cart_id=cart_id)
     if cart is None or not cart.items:
         raise EmptyCartError("Your cart is empty")
@@ -56,6 +69,15 @@ def place_order(db: Session, cart_id: str | None) -> Order:
 
 
 def get_orders(db: Session, cart_id: str | None) -> list[OrderSummaryOut]:
+    """Return order summaries for the given cart.
+
+    Args:
+        db: Active database session.
+        cart_id: Cart identifier from the request context.
+
+    Returns:
+        A list of order summaries, or an empty list when no cart is available.
+    """
     if cart_id is None:
         return []
 
@@ -64,6 +86,19 @@ def get_orders(db: Session, cart_id: str | None) -> list[OrderSummaryOut]:
 
 
 def get_order_by_id(db: Session, *, order_id: int, cart_id: str | None) -> OrderDetailOut:
+    """Return a single order for the given cart.
+
+    Args:
+        db: Active database session.
+        order_id: Identifier of the order to fetch.
+        cart_id: Cart identifier from the request context.
+
+    Returns:
+        The serialised order detail.
+
+    Raises:
+        OrderNotFoundError: If the cart is missing or the order is not found for it.
+    """
     if cart_id is None:
         raise OrderNotFoundError(f"Order {order_id} not found")
 
@@ -75,6 +110,14 @@ def get_order_by_id(db: Session, *, order_id: int, cart_id: str | None) -> Order
 
 
 def serialize_order_summary(order: Order) -> OrderSummaryOut:
+    """Map an order model to the summary response schema.
+
+    Args:
+        order: Order model instance to serialise.
+
+    Returns:
+        The order summary DTO.
+    """
     return OrderSummaryOut(
         id=order.id,
         status=order.status,
@@ -84,6 +127,14 @@ def serialize_order_summary(order: Order) -> OrderSummaryOut:
 
 
 def serialize_order_detail(order: Order) -> OrderDetailOut:
+    """Map an order model to the detail response schema.
+
+    Args:
+        order: Order model instance to serialise.
+
+    Returns:
+        The order detail DTO with items sorted by item ID.
+    """
     return OrderDetailOut(
         id=order.id,
         status=order.status,
