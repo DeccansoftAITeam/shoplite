@@ -17,13 +17,26 @@ export default function OrderDetailPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setIsLoading(true);
+    setError(null);
+
     if (!id) {
+      setOrder(null);
       setError('Invalid order ID.');
       setIsLoading(false);
       return;
     }
 
-    fetchOrder(Number(id))
+    const orderId = Number(id);
+
+    if (!Number.isInteger(orderId) || orderId <= 0) {
+      setOrder(null);
+      setError('Invalid order ID.');
+      setIsLoading(false);
+      return;
+    }
+
+    fetchOrder(orderId)
       .then(setOrder)
       .catch((requestError) => {
         setError(getErrorMessage(requestError, 'Failed to load order.'));
